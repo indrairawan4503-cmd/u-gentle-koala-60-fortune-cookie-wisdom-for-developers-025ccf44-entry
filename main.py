@@ -16,8 +16,14 @@ def main():
     with open("/output/entry.txt", "w", encoding="utf-8") as f:
         f.write(line)
     here = os.path.dirname(os.path.abspath(__file__))
-    with open(os.path.join(here, "entry.txt"), "w", encoding="utf-8") as f:
-        f.write(line)
+    # Best-effort convenience copy next to this script (repo root).
+    # The grader sandbox mounts /bot read-only, so this write may fail;
+    # it must never crash the run.
+    try:
+        with open(os.path.join(here, "entry.txt"), "w", encoding="utf-8") as f:
+            f.write(line)
+    except OSError:
+        pass
     print("%d chars: %s" % (len(line), line))
 
 if __name__ == "__main__":
